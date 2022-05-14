@@ -1,10 +1,10 @@
 // Assignment Code
 
 
-const CHARACTERS = 'ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz';
+const UP = 'ABCDEFGHIJKLMNPQRSTUVWXYZ';
 const SYMBOLS = '!@#$%^&*.~?';
 const NUMBERS = '123456789';
-
+const LOW = 'abcdefghijklmnpqrstuvwxyz';
 
 function generateString(length, sourceCharacters) {
   let result ='';
@@ -22,7 +22,7 @@ function writePassword() {
 
   passwordText.value = password;
 
-}
+};
 
 
 
@@ -36,35 +36,40 @@ var randomNumber = function(min, max) {
 }; 
 
 
+function promptPasswordLength() {
+ // TO DO: Make unable to add less than 8 or more than 128
+  return window.prompt('How many characters? 8-128.');
 
+};
+
+function promptCharacterTypes() {
+  // TO DO: 
+   return window.prompt('Do you want to use UpperCase? Y or N?');
+ 
+   return window.prompt('Do you want to use LowerCase? Y or N?');
+
+   return window.prompt('Do you want to use Special Characers? Y or N?');
+
+   return window.prompt('Do you want to use Numbers? Y or N?');
+ };
 
 function generatePassword() {
   var generateBtn = document.querySelector("#generate");
-// Add event listener to generate button
+  // Add event listener to generate button
   generateBtn.addEventListener("click", writePassword);
-
-  var length = window.prompt('How many characters? 8-128.');
-  var i = 0;
+  var length = promptPasswordLength();
+  const NUMCHARGROUP = 4;
 
  
-  while (i < length) {
-    i = i + 1;
-  }
+  var sym = generateString(2, SYMBOLS);
+  var num = generateString(2, NUMBERS);
+  var up = generateString(2, UP);
+  var low =generateString(2, LOW)
+  var remain = length - 8;
+  var moreCharacters = generateString(remain, UP + LOW + NUMBERS + SYMBOLS);
 
-}
-function getRandomCharacter() {
-   var ran = randomNumber(1, 3);
- if(ran === 1) {
-    var sym = generateString(1, SYMBOLS);
-    return sym;
-  }
-  else if (ran === 2) {
-    var num = generateString(1, NUMBERS);
-    return num;
-  }
-  else {
-    var car = generateString(1, CHARACTERS);
-    return car;
-  }
-}
-generatePassword();
+  return sym + num + low + up + moreCharacters;
+  
+};
+
+console.log(generatePassword());

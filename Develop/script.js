@@ -15,19 +15,6 @@ function generateString(length, sourceCharacters) {
   return result;
 }
 
-// Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
-
-  passwordText.value = password;
-
-};
-
-
-
-
-
 
 var randomNumber = function(min, max) {
   var value = Math.floor(Math.random() * (max - min + 1) + min);
@@ -37,39 +24,93 @@ var randomNumber = function(min, max) {
 
 
 function promptPasswordLength() {
- // TO DO: Make unable to add less than 8 or more than 128
-  return window.prompt('How many characters? 8-128.');
+ 
+  var length = 0;
+  var done = false;
+  while(!done) {
+    length = window.prompt('How many characters? 8-128.');
+    if (length < 8 || length > 128) {
+      done = false;
+      window.alert('Please pick a valid number.')
+    } else {
+      done = true;
+    }
+  }
 
+  return length;
 };
 
-function promptCharacterTypes() {
-  // TO DO: 
-   return window.prompt('Do you want to use UpperCase? Y or N?');
+function promptYesNoQuestion(question) {
  
-   return window.prompt('Do you want to use LowerCase? Y or N?');
-
-   return window.prompt('Do you want to use Special Characers? Y or N?');
-
-   return window.prompt('Do you want to use Numbers? Y or N?');
+  var answer = '';
+  while(!['y','n'].includes(answer)) {
+    answer = window.prompt(question +' Y or N?').toLowerCase();
+  }
+  
+  
+  return answer === 'y';
  };
 
 function generatePassword() {
-  var generateBtn = document.querySelector("#generate");
-  // Add event listener to generate button
-  generateBtn.addEventListener("click", writePassword);
+ 
+
+
   var length = promptPasswordLength();
   const NUMCHARGROUP = 4;
+  var password = '';
+  var totalCharacterSet = '';
 
- 
-  var sym = generateString(2, SYMBOLS);
-  var num = generateString(2, NUMBERS);
-  var up = generateString(2, UP);
-  var low =generateString(2, LOW)
-  var remain = length - 8;
-  var moreCharacters = generateString(remain, UP + LOW + NUMBERS + SYMBOLS);
+  if (promptYesNoQuestion('Do you want to use Special Characers?')) {
+   var sym = generateString(2, SYMBOLS);
+   password = password + sym;
+   totalCharacterSet = totalCharacterSet + SYMBOLS;
+  }
+  
+  if (promptYesNoQuestion('Do you want to use numbers?')) {
+    var num = generateString(2, NUMBERS);
+    password = password + num;
+   totalCharacterSet = totalCharacterSet + NUMBERS;
+  }
 
-  return sym + num + low + up + moreCharacters;
+  if (promptYesNoQuestion('Do you want to use UpperCase?')) {
+    var up = generateString(2, UP);
+    password = password + up;
+   totalCharacterSet = totalCharacterSet + UP;
+  }
+
+  if (promptYesNoQuestion('Do you want to use LowerCase?')) {
+    var low =generateString(2, LOW)
+    password = password + low;
+    totalCharacterSet = totalCharacterSet + LOW;
+  }
+
+
+  var remain = length - password.length;
+  var moreCharacters = generateString(remain, totalCharacterSet);
+
+  return password + moreCharacters;
   
 };
 
-console.log(generatePassword());
+// Write password to the #password input
+function writePassword() {
+  var password = generatePassword();
+  var passwordText = document.querySelector("#password");
+
+  passwordText.value = password;
+  console.log(password);
+  if (password === '') {
+    passwordText.value = 'Try again, Dumbass';
+    setTimeout(writePassword, 5000);
+  }
+};
+
+function main(){
+
+   var generateBtn = document.querySelector("#generate");
+  
+  // Add event listener to generate button
+  generateBtn.addEventListener("click", writePassword);
+}
+
+main()

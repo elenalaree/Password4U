@@ -2,9 +2,10 @@
 
 
 const UP = 'ABCDEFGHIJKLMNPQRSTUVWXYZ';
+const LOW = 'abcdefghijklmnpqrstuvwxyz';
 const SYMBOLS = '!@#$%^&*.~?';
 const NUMBERS = '123456789';
-const LOW = 'abcdefghijklmnpqrstuvwxyz';
+
 
 function generateString(length, sourceCharacters) {
   let result ='';
@@ -14,14 +15,6 @@ function generateString(length, sourceCharacters) {
   }
   return result;
 }
-
-
-var randomNumber = function(min, max) {
-  var value = Math.floor(Math.random() * (max - min + 1) + min);
-
-  return value;
-}; 
-
 
 function promptPasswordLength() {
  
@@ -40,23 +33,21 @@ function promptPasswordLength() {
   return length;
 };
 
+
 function promptYesNoQuestion(question) {
  
   var answer = '';
   while(!['y','n'].includes(answer)) {
-    answer = window.prompt(question +' Y or N?').toLowerCase();
+    answer = window.prompt(question + ' Y or N?').toLowerCase();
   }
   
-  
   return answer === 'y';
- };
+};
+
 
 function generatePassword() {
  
-
-
   var length = promptPasswordLength();
-  const NUMCHARGROUP = 4;
   var password = '';
   var totalCharacterSet = '';
 
